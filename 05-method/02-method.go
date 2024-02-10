@@ -27,7 +27,7 @@ func main() {
 		Product{109, "Golden Pen", 2000, 20, "Stationary"},
 	}
 
-	//fmt.Println(products.format())
+	fmt.Println(len(products))
 	//var expensiveCostFilterPredicate = func(product Product) bool {
 	//	return product.Cost > 1000
 	//}

@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -8,6 +11,11 @@ type Product struct {
 	ID       int
 	Name     string
 	Price    float64
+	Category string
+}
+
+type ProductGroup struct {
+	Product  []Product
 	Category string
 }
 
@@ -88,6 +96,52 @@ func main() {
 	//})
 	//fmt.Println(mappedProducts)
 
+	//groupedProducts := groupingProductsByCategory(products)
+	//fmt.Println(groupedProducts)
+
+	//grouping
+	//groupedProducts := groupingBy(products, func(product Product) string {
+	//	return product.Category
+	//	//return strconv.Itoa(product.ID)
+	//})
+	//fmt.Println(groupedProducts)
+	//fmt.Println(mapp(products, func(product Product) any {
+	//	return len(product.Name)
+	//}))
+
+	sort.Slice(products, func(i, j int) bool {
+		return products[i].ID < products[j].ID
+	})
+	fmt.Println(products)
+}
+
+func groupingBy(products []Product, fn func(product Product) string) map[string][]Product {
+	var groupProductMap = make(map[string][]Product)
+	for _, product := range products {
+		filed := fn(product)
+		//filed := product.Category
+		//filed := product.ID
+		_, ok := groupProductMap[filed]
+		if !ok {
+			groupProductMap[filed] = []Product{}
+		}
+		groupProductMap[filed] = append(groupProductMap[filed], product)
+	}
+	return groupProductMap
+}
+
+func groupingProductsByCategory(products []Product) map[string][]Product {
+	var groupProductMap = make(map[string][]Product)
+	for _, product := range products {
+		//category := product.Name
+		category := strconv.Itoa(product.ID)
+		_, ok := groupProductMap[category]
+		if !ok {
+			groupProductMap[category] = []Product{}
+		}
+		groupProductMap[category] = append(groupProductMap[category], product)
+	}
+	return groupProductMap
 }
 
 func mapProductsBasedOnNames(products []Product) interface{} {
